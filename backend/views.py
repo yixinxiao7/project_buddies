@@ -17,9 +17,10 @@ class CredentialsCreate(views.APIView):
         """
         Adds user and hashed password to Credentials schema.
         Input:
-            request: JSON string containing 'username' and 'password'
+            request: request object. request.data is a dictionary with 
+            'username' and 'password'.
         Returns:
-            HTTP response of success or failure
+            HTTP response of success or failure.
         """
         # load data
         passw = request.data["password"]
