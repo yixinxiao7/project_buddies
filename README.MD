@@ -8,6 +8,10 @@ Built from: https://www.valentinog.com/blog/drf/
 
 ### Run Server
 `python manage.py runserver`
+
+### Create Schema
+- `python manage.py makemigrations backend; python manage.py migrate`
+
 ### Coverage commands
 `coverage run --source='.' manage.py test`
 `coverage html`
