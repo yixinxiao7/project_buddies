@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator
 
 class Person(models.Model):
     name = models.CharField(max_length=100)
@@ -21,3 +22,22 @@ class Teams(models.Model):
     # def create(self, username, password):
     #     credentials = self(username=username, password=password)
     #     return credentials
+
+class Project(models.Model):
+    project_name = models.CharField(max_length=100)
+    team_name = models.ForeignKey(
+        'Teams',
+        db_column='team_name',
+        on_delete=models.CASCADE,
+    )
+    description = models.CharField(max_length=300)
+    counter = models.IntegerField(validators=[MinValueValidator(0)])
+    poc_name = models.ForeignKey(
+        'Person',
+        db_column='name',
+        on_delete=models.CASCADE,
+    )
+    poc_email = models.CharField(max_length=100)
+    start_timeline = models.DateTimeField()
+    end_timeline = models.DateTimeField()
+    completed = models.BooleanField()
