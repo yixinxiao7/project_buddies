@@ -12,10 +12,9 @@ export default class CreateAccount extends React.Component {
     }
 
 
-    // TODO: MAKE THIS INTO A POST REQUEST LMAO
     handleSubmit(event) {
       event.preventDefault();
-      const {url} = this.props;  // initialize search component with url
+      const {url} = this.props;
       const userPass = JSON.stringify({ username: this.state.username, password: this.state.password });
       fetch(url,  {
         method: 'POST',
