@@ -49,3 +49,23 @@ class TeamsListCreate(views.APIView):
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ProjectListCreate(views.APIView):
+    """
+    Create a project.
+    """
+
+    def post(self, request):
+        """
+        Adds user and hashed password to Credentials schema.
+        Input:
+            request: request object. request.data is a dictionary with 
+            'project_name', 'team_name', 'description', 'counter', 'poc_name', 'poc_email', 'start_timeline', 'end_timeline', and 'completed'.
+        Returns:
+        """
+        # post to table
+        serializer = TeamsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
