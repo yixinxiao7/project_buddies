@@ -7,8 +7,10 @@ export default class CreateAccount extends React.Component {
       this.state = {
         username: '',
         password: '',
+        hidden: true,
       };
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.toggleShow = this.toggleShow.bind(this);
     }
 
 
@@ -39,6 +41,10 @@ export default class CreateAccount extends React.Component {
           });
         });
     }
+
+    toggleShow() {
+      this.setState({ hidden: !this.state.hidden });
+    }
   
     render() {
         const { username } = this.state;
@@ -54,12 +60,13 @@ export default class CreateAccount extends React.Component {
                     onChange={(e) => this.setState({ username: e.target.value })}
                 />
                 <input
-                    type="text"
+                    type={this.state.hidden ? 'password' : 'text'}
                     name="password"
                     value={password}
                     placeholder="Password"
                     onChange={(e) => this.setState({ password: e.target.value })}
                 />
+                <button onClick={this.toggleShow}>Show / Hide</button>
                 <input
                     type="submit"
                     name="submitButton"
