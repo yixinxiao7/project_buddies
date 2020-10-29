@@ -31,12 +31,13 @@ class Project(models.Model):
         on_delete=models.CASCADE,
     )
     description = models.CharField(max_length=300)
-    counter = models.IntegerField(validators=[MinValueValidator(0)])
+    counter = models.IntegerField()
     poc_name = models.ForeignKey(
         'Person',
         db_column='name',
         on_delete=models.CASCADE,
     )
+    
     poc_email = models.CharField(max_length=100)
     start_timeline = models.DateTimeField()
     end_timeline = models.DateTimeField()

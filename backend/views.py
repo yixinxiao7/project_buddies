@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Person, Credentials, Teams
-from .serializers import PersonSerializer, CredentialsSerializer, TeamsSerializer
+from .models import Person, Credentials, Teams, Project
+from .serializers import PersonSerializer, CredentialsSerializer, TeamsSerializer, ProjectSerializer
 from rest_framework import generics, views, response, status
 
 import hashlib, uuid
@@ -64,7 +64,7 @@ class ProjectListCreate(views.APIView):
         Returns:
         """
         # post to table
-        serializer = TeamsSerializer(data=request.data)
+        serializer = ProjectSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)

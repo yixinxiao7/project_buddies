@@ -18,5 +18,5 @@ class TeamsSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
-        models = Project
+        model = Project
         fields = ('id', 'project_name', 'team_name', 'description', 'counter', 'poc_name', 'poc_email', 'start_timeline', 'end_timeline', 'completed')
