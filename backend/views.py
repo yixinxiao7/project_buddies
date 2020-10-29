@@ -2,6 +2,8 @@ from django.shortcuts import render
 from .models import Person, Credentials, Teams
 from .serializers import PersonSerializer, CredentialsSerializer, TeamsSerializer
 from rest_framework import generics, views, response, status
+from django.core.exceptions import ObjectDoesNotExist
+
 
 import hashlib, uuid
 
@@ -40,19 +42,33 @@ class CredentialsCreate(views.APIView):
 class TeamsListCreate(views.APIView):
     
     def get(self, request):
-        teams_info = [[team.team_name, team.team_leader, team.team_info, team.team_progress, team.team_picture]
-                        for team in Teams.objects.all()]
+        query_team = request.query_params.get('teamName')
         all_team_data = []
-        for team in teams_info:
-            data = {
-                    "team_name": team[0],
-                    "team_leader": team[1],
-                    "team_info": team[2],
-                    "team_progress": team[3],
-                    "team_picture": team[4]
-                    }
-            all_team_data.append(data)
-            
+        if query_team is not None:
+            try:
+                team = Teams.objects.get(team_name=query_team)
+                data = {
+                        "team_name": team.team_name,
+                        "team_leader": team.team_leader,
+                        "team_info": team.team_info,
+                        "team_progress": team.team_progress,
+                        "team_picture": team.team_picture
+                        }
+                all_team_data.append(data)
+            except Teams.DoesNotExist:
+                print("Could not find item")
+        else:
+            teams_info = [[team.team_name, team.team_leader, team.team_info, team.team_progress, team.team_picture]
+                            for team in Teams.objects.all()]
+            for team in teams_info:
+                data = {
+                        "team_name": team[0],
+                        "team_leader": team[1],
+                        "team_info": team[2],
+                        "team_progress": team[3],
+                        "team_picture": team[4]
+                        }
+                all_team_data.append(data)
         return response.Response(all_team_data, status=status.HTTP_200_OK)
 
     def post(self, request):
