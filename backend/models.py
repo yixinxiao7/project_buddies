@@ -2,10 +2,39 @@ from django.db import models
 from django.core.validators import MinValueValidator
 
 class Person(models.Model):
-    name = models.CharField(max_length=100)
+    FRESHMAN = 'FR'
+    SOPHOMORE = 'SO'
+    JUNIOR = 'JR'
+    SENIOR = 'SR'
+    GRADUATE = 'GR'
+    YEAR_IN_SCHOOL_CHOICES = [
+        (FRESHMAN, 'Freshman'),
+        (SOPHOMORE, 'Sophomore'),
+        (JUNIOR, 'Junior'),
+        (SENIOR, 'Senior'),
+        (GRADUATE, 'Graduate'),
+    ]
+    username = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
     email = models.EmailField()
-    year = models.CharField(max_length=50)
+    year = models.CharField(
+        max_length=2,
+        choices=YEAR_IN_SCHOOL_CHOICES,
+        default=FRESHMAN,
+    )
+    profile_pic = models.BinaryField()
+    about_me = models.CharField(max_length=300)
+    skills = models.CharField(max_length=100) # Probably need to make a list out of it
     created_at = models.DateTimeField(auto_now_add=True)
+class AddMember(models.Model):
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    team_name = models.ForeignKey(
+        'Teams',
+        db_column='team_name',
+        on_delete=models.CASCADE,
+    )
 
 class Credentials(models.Model):
     username = models.CharField(max_length=100)
