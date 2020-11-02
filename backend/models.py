@@ -56,7 +56,7 @@ class Project(models.Model):
         on_delete=models.CASCADE,
     )
     description = models.CharField(max_length=300)
-    counter = models.IntegerField(validators=[MinValueValidator(0)])
+    counter = models.IntegerField(default=5)
     poc_name = models.ForeignKey(
         'Person',
         db_column='name',
@@ -65,4 +65,26 @@ class Project(models.Model):
     poc_email = models.CharField(max_length=100)
     start_timeline = models.DateTimeField()
     end_timeline = models.DateTimeField()
-    completed = models.BooleanField()
+    completed = models.BooleanField(default=False)
+
+class TeamFeed(models.Model):
+    team_name = models.ForeignKey(
+        'Teams',
+        db_column='team_name',
+        on_delete=models.CASCADE,
+    )
+    announcement_user = models.ForeignKey(
+        'Credentials',
+        db_column='username',
+        on_delete=models.CASCADE,
+    )
+    announcement = models.CharField(max_length=600)
+    timestamp = models.DateTimeField()
+
+class ProjectSkill(models.Model):
+    project_name = models.ForeignKey(
+        'Project',
+        db_column='project_name',
+        on_delete=models.CASCADE,
+    )
+    skill = models.CharField(max_length=75)

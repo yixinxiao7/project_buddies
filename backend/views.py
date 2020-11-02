@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from .models import Person, Credentials, Teams
+from .models import Person, Credentials, Teams, Project, ProjectSkill, TeamFeed
 from .serializers import *
 # from .serializers import PersonSerializer, CredentialsSerializer, TeamsSerializer, MemberSerializer
+
 from rest_framework import generics, views, response, status
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -95,12 +96,44 @@ class ProjectListCreate(views.APIView):
         Returns:
         """
         # post to table
-        serializer = TeamsSerializer(data=request.data)
+        serializer = ProjectSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class TeamFeedCreate(views.APIView):
+    """
+    Add a team announcement.
+    """
+
+    def post(self, request):
+        """
+        Adds a team announcement based on the user and team name.
+        Input:
+
+        """
+        serializer = TeamFeedSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ProjectSkillCreate(views.APIView):
+    """
+    Add needed skills for a project.
+    """
+
+    def post(self, request):
+        """
+        Post request for adding skills to a project 
+        """
+        serializer = ProjectSkillSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+      
 # Add new member based on first and last names to the team
 class MemberCreate(views.APIView):
 
@@ -112,4 +145,3 @@ class MemberCreate(views.APIView):
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-        
