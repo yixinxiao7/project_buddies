@@ -30,3 +30,9 @@ class ProjectSkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectSkill
         fields = ('id', 'project_name', 'skill')
+
+class MemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = ('first_name', 'last_name', 'team_name')
+
