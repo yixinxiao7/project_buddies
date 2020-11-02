@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Person, Credentials, Teams
-from .serializers import PersonSerializer, CredentialsSerializer, TeamsSerializer
+from .serializers import *
+# from .serializers import PersonSerializer, CredentialsSerializer, TeamsSerializer, MemberSerializer
 from rest_framework import generics, views, response, status
 
 import hashlib, uuid
@@ -71,12 +72,11 @@ class ProjectListCreate(views.APIView):
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Add new member based on first and last names to the team
-class TeamAddCreate(views.APIView):
+class MemberCreate(views.APIView):
 
     def post(self, request):
-
         # post to table
-        serializer = TeamsSerializer(data=request.data)
+        serializer = MemberSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)

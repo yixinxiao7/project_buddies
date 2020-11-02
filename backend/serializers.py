@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Person, Credentials, Teams, Project, AddMember
+from .models import Person, Credentials, Teams, Project, Member
 
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,10 +18,10 @@ class TeamsSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
-        models = Project
+        model = Project
         fields = ('id', 'project_name', 'team_name', 'description', 'counter', 'poc_name', 'poc_email', 'start_timeline', 'end_timeline', 'completed')
 
-class TeamAddSerializer(serializers.ModelSerializer):
+class MemberSerializer(serializers.ModelSerializer):
     class Meta:
-        models = AddMember
+        model = Member
         fields = ('first_name', 'last_name', 'team_name')

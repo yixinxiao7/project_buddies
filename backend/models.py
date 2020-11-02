@@ -26,15 +26,11 @@ class Person(models.Model):
     profile_pic = models.BinaryField()
     about_me = models.CharField(max_length=300)
     skills = models.CharField(max_length=100) # Probably need to make a list out of it
-    created_at = models.DateTimeField(auto_now_add=True)
-class AddMember(models.Model):
+    # created_at = models.DateTimeField(auto_now_add=True)
+class Member(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    team_name = models.ForeignKey(
-        'Teams',
-        db_column='team_name',
-        on_delete=models.CASCADE,
-    )
+    team_name = models.CharField(primary_key=True,max_length=1000)
 
 class Credentials(models.Model):
     username = models.CharField(max_length=100)
