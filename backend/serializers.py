@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import Person, Credentials, Teams, Project, TeamFeed, ProjectSkill
+from .models import Person, Credentials, Teams, Project, TeamFeed, ProjectSkill, Member
 
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
-        fields = ('id', 'name', 'email', 'year')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'year', 'profile_pic', 'about_me','skills' )
     
 class CredentialsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,7 +19,7 @@ class TeamsSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ('id', 'project_name', 'team_name', 'description', 'counter', 'poc_name', 'poc_email', 'start_timeline', 'end_timeline', 'completed')
+        fields = ('id', 'project_name', 'team_name', 'description', 'counter', 'poc_username', 'start_timeline', 'end_timeline', 'completed')
 
 class TeamFeedSerializer(serializers.ModelSerializer):
     class Meta:

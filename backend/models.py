@@ -2,31 +2,16 @@ from django.db import models
 from django.core.validators import MinValueValidator
 
 class Person(models.Model):
-    FRESHMAN = 'FR'
-    SOPHOMORE = 'SO'
-    JUNIOR = 'JR'
-    SENIOR = 'SR'
-    GRADUATE = 'GR'
-    YEAR_IN_SCHOOL_CHOICES = [
-        (FRESHMAN, 'Freshman'),
-        (SOPHOMORE, 'Sophomore'),
-        (JUNIOR, 'Junior'),
-        (SENIOR, 'Senior'),
-        (GRADUATE, 'Graduate'),
-    ]
     username = models.CharField(max_length=100)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField()
-    year = models.CharField(
-        max_length=2,
-        choices=YEAR_IN_SCHOOL_CHOICES,
-        default=FRESHMAN,
-    )
+    year = models.CharField(max_length=100)
     profile_pic = models.BinaryField()
     about_me = models.CharField(max_length=300)
     skills = models.CharField(max_length=100) # Probably need to make a list out of it
     # created_at = models.DateTimeField(auto_now_add=True)
+
 class Member(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -57,12 +42,16 @@ class Project(models.Model):
     )
     description = models.CharField(max_length=300)
     counter = models.IntegerField(default=5)
-    poc_name = models.ForeignKey(
+    poc_username = models.ForeignKey(
         'Person',
-        db_column='name',
+        db_column='username',
         on_delete=models.CASCADE,
     )
-    poc_email = models.CharField(max_length=100)
+    # poc_email = models.ForeignKey(
+    #     'Person',
+    #     db_column='email',
+    #     on_delete=models.CASCADE,
+    # )
     start_timeline = models.DateTimeField()
     end_timeline = models.DateTimeField()
     completed = models.BooleanField(default=False)

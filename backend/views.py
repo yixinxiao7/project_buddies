@@ -87,6 +87,47 @@ class ProjectListCreate(views.APIView):
     Create a project.
     """
 
+    def get(self, request):
+        query_project = request.query_params.get('projectName')
+        all_project_data = []
+        if query_project is not None:
+            try:
+                project = Project.objects.get(project_name=query_project)
+                data = {
+                        "project_name": project.project_name,
+                        "team_name": project.team_name.team_name,
+                        "description": project.description,
+                        "counter": project.counter,
+                        "poc_username": project.poc_username.username,
+                        "start_timeline": project.start_timeline,
+                        "end_timeline": project.end_timeline,
+                        "completed": project.completed
+                        }
+                all_project_data.append(data)
+            except Project.DoesNotExist:
+                print("Could not find item")
+        else:
+            projects_info = [
+                          [
+                           project.project_name, project.team_name, project.description,
+                           project.counter, project.poc_username, 
+                           project.start_timeline, project.end_timeline, project.completed
+                          ] for project in Project.objects.all()
+                         ]
+            for project in projects_info:
+                data = {
+                        "project_name": project[0],
+                        "team_name": project[1].team_name,
+                        "description": project[2],
+                        "counter": project[3],
+                        "poc_username": project[4].username,
+                        "start_timeline": project[5],
+                        "end_timeline": project[6],
+                        "completed": project[7]
+                        }
+                all_project_data.append(data)
+        return response.Response(all_project_data, status=status.HTTP_200_OK)
+    
     def post(self, request):
         """
         Adds user and hashed password to Credentials schema.
@@ -96,6 +137,15 @@ class ProjectListCreate(views.APIView):
         Returns:
         """
         # post to table
+        # # add foreign object pks
+        team = Teams.objects.get(team_name=request.data['team_name'])
+        request.data['team_name'] = team.id
+        person = Person.objects.get(username=request.data['poc_username'])
+        request.data['poc_username'] = person.id  # TODO, this is not a team.id, we need person.id
+        # data['team_leader'] = team.team_leader
+        # data['team_info'] = team.team_info
+        # data['team_progress'] = team.team_progress
+
         serializer = ProjectSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
