@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Person, Credentials, Teams, Project, TeamFeed, ProjectSkill
+from .models import Person, Credentials, Teams, Project, TeamFeed, ProjectSkill, Member
 
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:

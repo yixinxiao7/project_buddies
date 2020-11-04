@@ -139,6 +139,14 @@ class ProjectListCreate(views.APIView):
         Returns:
         """
         # post to table
+        # # add foreign object pks
+        team = Teams.objects.get(team_name=request.data['team_name'])
+        request.data['team_name'] = team.id
+        request.data['poc_name'] = team.id
+        # data['team_leader'] = team.team_leader
+        # data['team_info'] = team.team_info
+        # data['team_progress'] = team.team_progress
+
         serializer = ProjectSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
