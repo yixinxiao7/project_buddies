@@ -41,3 +41,4 @@ class Project(models.Model):
     start_timeline = models.DateTimeField()
     end_timeline = models.DateTimeField()
     completed = models.BooleanField()
+

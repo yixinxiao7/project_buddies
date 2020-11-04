@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Person, Credentials, Teams
+from .models import Person, Credentials, Teams, Project
 from .serializers import PersonSerializer, CredentialsSerializer, TeamsSerializer
 from rest_framework import generics, views, response, status
 from django.core.exceptions import ObjectDoesNotExist
@@ -85,6 +85,49 @@ class ProjectListCreate(views.APIView):
     Create a project.
     """
 
+    def get(self, request):
+        query_project = request.query_params.get('projectName')
+        all_project_data = []
+        if query_project is not None:
+            try:
+                project = Project.objects.get(team_name=query_project)
+                data = {
+                        "project_name": project.project_name,
+                        "team_name": project.team_name,
+                        "description": project.description,
+                        "counter": project.counter,
+                        "poc_name": project.poc_name,
+                        "poc_email": project.poc_email,
+                        "start_timeline": project.start_timeline,
+                        "end_timeline": project.end_timeline,
+                        "completed": project.completed
+                        }
+                all_project_data.append(data)
+            except Project.DoesNotExist:
+                print("Could not find item")
+        else:
+            projects_info = [
+                          [
+                           project.project_name, project.team_name, project.description,
+                           project.counter, project.poc_name, project.poc_email, 
+                           project.start_timeline, project.end_timeline, project.completed
+                          ] for project in Project.objects.all()
+                         ]
+            for project in projects_info:
+                data = {
+                        "project_name": project[0],
+                        "team_name": project[1],
+                        "description": project[2],
+                        "counter": project[3],
+                        "poc_name": project[4],
+                        "poc_email": project[5],
+                        "start_timeline": project[6],
+                        "end_timeline": project[7],
+                        "completed": project[8]
+                        }
+                all_project_data.append(data)
+        return response.Response(all_project_data, status=status.HTTP_200_OK)
+    
     def post(self, request):
         """
         Adds user and hashed password to Credentials schema.
