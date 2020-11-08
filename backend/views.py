@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Person, Credentials, Teams, Project, ProjectSkill, TeamFeed
+from .models import Person, Credentials, Teams, Project, ProjectSkill, TeamFeed, Member
 from .serializers import *
 # from .serializers import PersonSerializer, CredentialsSerializer, TeamsSerializer, MemberSerializer
 
@@ -105,7 +105,7 @@ class ProjectListCreate(views.APIView):
                         }
                 all_project_data.append(data)
             except Project.DoesNotExist:
-                print("Could not find item")
+                return response.Response(all_project_data, status=status.HTTP_404_NOT_FOUND)
         else:
             projects_info = [
                           [
@@ -186,7 +186,45 @@ class ProjectSkillCreate(views.APIView):
       
 # Add new member based on first and last names to the team
 class MemberCreate(views.APIView):
-
+    # GET Request
+    def get(self, request): # This looks at all teams
+        query_team = request.query_params.get('teamName') # get the argument after team
+        query_member = request.query_params.get('memberName') # get the argument after member
+        all_member_data = [] # only need one output
+        if query_member is None: # You are only searching for team
+            if query_team is not None: 
+                try:
+                    # print(query_team)
+                    members = Member.objects.filter(team_name=query_team) # only if it belongs to the team
+                    #print(type(query_team))
+                    #print(member[0].first_name)
+                    for m in members:
+                        data = {
+                                "user_name": m.user_name,
+                                "first_name": m.first_name,
+                                "last_name": m.last_name,
+                                "team_name": m.team_name # Just a sanity check here
+                                }
+                        all_member_data.append(data)
+                except Member.DoesNotExist:
+                    return response.Response(all_member_data, status=status.HTTP_404_NOT_FOUND)
+        else: # searching for both team and member
+            if query_team is not None: 
+                try:
+                    member = Member.objects.get(team_name=query_team, user_name=query_member)
+                    # print(member)
+                    data = {
+                            "user_name": member.user_name,
+                            "first_name": member.first_name,
+                            "last_name": member.last_name,
+                            "team_name": member.team_name # Just a sanity check here
+                            }
+                    all_member_data.append(data)
+                except Member.DoesNotExist:
+                    #print("Could not find item")
+                    return response.Response(all_member_data, status=status.HTTP_404_NOT_FOUND)
+        return response.Response(all_member_data, status=status.HTTP_200_OK)
+    # POST Request
     def post(self, request):
         # post to table
         serializer = MemberSerializer(data=request.data)

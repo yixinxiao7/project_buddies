@@ -56,20 +56,6 @@
         }
       },
       {
-        "model": "backend.Person",
-        "pk": 4,
-        "fields": {
-          "username": "user4",
-          "first_name": "black",
-          "last_name": "bear", 
-          "email": "bb@hotmail.com", 
-          "year": "Senior", 
-          "profile_pic": "", 
-          "about_me": "also short", 
-          "skills": "dying hair"
-        }
-      },
-      {
         "model": "backend.Teams",
         "pk": 1,
         "fields": {
@@ -82,8 +68,9 @@
       },
       {
         "model": "backend.Member",
-        "pk": 1,
+        "pk": "user4",
         "fields": {
+          "user_name": "user4",
           "first_name": "black",
           "last_name": "bear",
           "team_name": "shortkings" 
@@ -91,8 +78,9 @@
       },
       {
         "model": "backend.Member",
-        "pk": 2,
+        "pk": "user1",
         "fields": {
+            "user_name": "user1",
             "first_name": "liluzi",
             "last_name": "vert",
             "team_name": "shortkings"
