@@ -161,6 +161,8 @@ class TeamFeedCreate(views.APIView):
         Get a list of team announcements based on page number and number of items per page.
         """ 
         #Pages are ZERO-INDEXED!
+        #Since primary key of team is just id, foreign key references id not team name
+        #propose changing primary key to teamname and make teamnames unique?
         query_team = request.query_params.get('teamName')
         query_page = request.query_params.get('pageNum')
         query_num_items = request.query_params.get('numItems')
@@ -175,7 +177,7 @@ class TeamFeedCreate(views.APIView):
         feed_data = {}
         if query_team is not None:
             try:
-                announcements = TeamFeed.objects.get(team_name=query_team)
+                announcements = TeamFeed.objects.filter(team_name=query_team).values()
                 #case 1: not enough to get to page
                 start = query_page*query_num_items
                 offset = query_num_items
@@ -185,7 +187,7 @@ class TeamFeedCreate(views.APIView):
                 #case 2: enough to get to page, but not enough to fill 
                 elif len(announcements) < start + offset:
                     feed_data['last_page'] = True
-                    feed_data['feed'] =  announcements[start:-1]
+                    feed_data['feed'] =  announcements[start:len(announcements)]
                 #case 3: enought to get to page and enough to fill
                 else:
                     feed_data['last_page'] = False
@@ -193,7 +195,7 @@ class TeamFeedCreate(views.APIView):
                 return response.Response(feed_data, status=status.HTTP_200_OK)
             except (TeamFeed.DoesNotExist, ValueError):
                 print("Could not find team name")
-        print("got here")
+        print("TEAMFEED GET ERROR")
         return response.Response({'error': 'place generic error here, could not find in Django docs'}, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
