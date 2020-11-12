@@ -163,6 +163,7 @@ class TeamFeedCreate(views.APIView):
         #Pages are ZERO-INDEXED!
         #Since primary key of team is just id, foreign key references id not team name
         #propose changing primary key to teamname and make teamnames unique?
+        #same for username?
         query_team = request.query_params.get('teamName')
         query_page = request.query_params.get('pageNum')
         query_num_items = request.query_params.get('numItems')
