@@ -61,6 +61,25 @@ class PersonView(views.APIView):
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def put(self, request):
+        """
+        Edits person.
+        Input:
+            request: request object. request.data is a dictionary with 
+            person fields.
+        Returns:
+            HTTP response of success or failure.
+        """
+        try:
+            person = Person.objects.get(username=request.data['username'])
+            serializer = PersonSerializer(person, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Person.DoesNotExist:
+                return response.Response(all_person_data, status=status.HTTP_404_NOT_FOUND)
+
 class CredentialsCreate(views.APIView):
     """
     Create credential information for user.
