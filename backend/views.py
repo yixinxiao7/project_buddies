@@ -11,7 +11,7 @@ import hashlib, uuid
 
 class PersonView(views.APIView):
     """
-    CRUD operatiosn for a person.
+    CRUD operations for a person.
     """
     def get(self, request):
         query_username = request.query_params.get('userName')
@@ -51,6 +51,15 @@ class PersonView(views.APIView):
                        }
                 all_person_data.append(data)
         return response.Response(all_person_data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+
+        # post to table
+        serializer = PersonSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CredentialsCreate(views.APIView):
     """
