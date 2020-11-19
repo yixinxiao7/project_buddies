@@ -9,9 +9,76 @@ from django.core.exceptions import ObjectDoesNotExist
 
 import hashlib, uuid
 
-class PersonListCreate(generics.ListCreateAPIView):
-    queryset = Person.objects.all()
-    serializer_class = PersonSerializer
+class PersonView(views.APIView):
+    """
+    CRUD operations for a person.
+    """
+    def get(self, request):
+        query_username = request.query_params.get('userName')
+        all_person_data = []
+        if query_username is not None:
+            try:
+                person = Person.objects.get(username=query_username)
+                data = {
+                        "username": person.username,
+                        "first_name": person.first_name,
+                        "last_name": person.last_name,
+                        "email": person.email,
+                        "year": person.year,
+                        "profile_pic": person.profile_pic,
+                        "about_me": person.about_me,
+                        "skills": person.skills
+                        }
+                all_person_data.append(data)
+            except Person.DoesNotExist:
+                return response.Response(all_person_data, status=status.HTTP_404_NOT_FOUND)
+        else:
+            persons_info = [[
+                             person.username, person.first_name, person.last_name, 
+                             person.email, person.year, person.profile_pic,
+                             person.about_me, person.skills
+                            ] for person in Person.objects.all()]
+            for person in persons_info:
+                data = {
+                        "username": person[0],
+                        "first_name": person[1],
+                        "last_name": person[2],
+                        "email": person[3],
+                        "year": person[4],
+                        "profile_pic": person[5],
+                        "about_me": person[6],
+                        "skills": person[7]
+                       }
+                all_person_data.append(data)
+        return response.Response(all_person_data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+
+        # post to table
+        serializer = PersonSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        """
+        Edits person.
+        Input:
+            request: request object. request.data is a dictionary with 
+            person fields.
+        Returns:
+            HTTP response of success or failure.
+        """
+        try:
+            person = Person.objects.get(username=request.data['username'])
+            serializer = PersonSerializer(person, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Person.DoesNotExist:
+                return response.Response(all_person_data, status=status.HTTP_404_NOT_FOUND)
 
 class CredentialsCreate(views.APIView):
     """
@@ -58,7 +125,7 @@ class TeamsListCreate(views.APIView):
                         }
                 all_team_data.append(data)
             except Teams.DoesNotExist:
-                print("Could not find item")
+                return response.Response(all_team_data, status=status.HTTP_404_NOT_FOUND)
         else:
             teams_info = [[team.team_name, team.team_leader, team.team_info, team.team_progress, team.team_picture]
                             for team in Teams.objects.all()]
