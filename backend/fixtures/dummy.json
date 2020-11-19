@@ -84,6 +84,9 @@
         "model": "backend.Member",
         "pk": 1,
         "fields": {
+        "pk": "user4",
+        "fields": {
+          "user_name": "user4",
           "first_name": "black",
           "last_name": "bear",
           "team_name": "shortkings" 
@@ -93,6 +96,10 @@
         "model": "backend.Member",
         "pk": 2,
         "fields": {
+
+        "pk": "user1",
+        "fields": {
+            "user_name": "user1",
             "first_name": "liluzi",
             "last_name": "vert",
             "team_name": "shortkings"
@@ -199,5 +206,6 @@
           "announcement": "msg 8",
           "timestamp": "2021-05-27 09:31" 
         }
+
       }
   ]

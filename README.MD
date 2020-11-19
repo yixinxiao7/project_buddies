@@ -12,6 +12,9 @@ Built from: https://www.valentinog.com/blog/drf/
 ### Create Schema
 - `python manage.py makemigrations backend; python manage.py migrate`
 
+### Activate Scripts
+`chmod +x bin/db`
+
 ### Coverage commands
 `coverage run --source='.' manage.py test`
 `coverage html`
