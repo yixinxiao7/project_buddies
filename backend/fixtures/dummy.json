@@ -56,6 +56,20 @@
         }
       },
       {
+        "model": "backend.Person",
+        "pk": 4,
+        "fields": {
+          "username": "user4",
+          "first_name": "black",
+          "last_name": "bear", 
+          "email": "bb@hotmail.com", 
+          "year": "Senior", 
+          "profile_pic": "", 
+          "about_me": "also short", 
+          "skills": "dying hair"
+        }
+      },
+      {
         "model": "backend.Teams",
         "pk": 1,
         "fields": {
@@ -68,6 +82,8 @@
       },
       {
         "model": "backend.Member",
+        "pk": 1,
+        "fields": {
         "pk": "user4",
         "fields": {
           "user_name": "user4",
@@ -78,6 +94,9 @@
       },
       {
         "model": "backend.Member",
+        "pk": 2,
+        "fields": {
+
         "pk": "user1",
         "fields": {
             "user_name": "user1",
@@ -99,5 +118,94 @@
           "end_timeline": "2021-05-27 09:31", 
           "completed": false
         }
+      },
+      {
+        "model": "backend.Credentials", 
+        "pk": 1, 
+        "fields": {
+          "username": "bob", 
+          "password": "bobpass"
+        }
+      },
+      {
+        "model": "backend.TeamFeed", 
+        "pk": 1, 
+        "fields": {
+          "team_name": 1, 
+          "announcement_user": 1, 
+          "announcement": "msg 1",
+          "timestamp": "2021-05-27 09:31" 
+        }
+      },
+      {
+        "model": "backend.TeamFeed", 
+        "pk": 2, 
+        "fields": {
+          "team_name": 1, 
+          "announcement_user": 1, 
+          "announcement": "msg 2",
+          "timestamp": "2021-05-27 09:31" 
+        }
+      },
+      {
+        "model": "backend.TeamFeed", 
+        "pk": 3, 
+        "fields": {
+          "team_name": 1, 
+          "announcement_user": 1, 
+          "announcement": "msg 3",
+          "timestamp": "2021-05-27 09:31" 
+        }
+      },
+      {
+        "model": "backend.TeamFeed", 
+        "pk": 4, 
+        "fields": {
+          "team_name": 1, 
+          "announcement_user": 1, 
+          "announcement": "msg 4",
+          "timestamp": "2021-05-27 09:31" 
+        }
+      },
+      {
+        "model": "backend.TeamFeed", 
+        "pk": 5, 
+        "fields": {
+          "team_name": 1, 
+          "announcement_user": 1, 
+          "announcement": "msg 5",
+          "timestamp": "2021-05-27 09:31" 
+        }
+      },
+      {
+        "model": "backend.TeamFeed", 
+        "pk": 6, 
+        "fields": {
+          "team_name": 1, 
+          "announcement_user": 1, 
+          "announcement": "msg 6",
+          "timestamp": "2021-05-27 09:31" 
+        }
+      },
+      {
+        "model": "backend.TeamFeed", 
+        "pk": 7, 
+        "fields": {
+          "team_name": 1, 
+          "announcement_user": 1, 
+          "announcement": "msg 7",
+          "timestamp": "2021-05-27 09:31" 
+        }
+      },
+      {
+        "model": "backend.TeamFeed", 
+        "pk": 8, 
+        "fields": {
+          "team_name": 1, 
+          "announcement_user": 1, 
+          "announcement": "msg 8",
+          "timestamp": "2021-05-27 09:31" 
+        }
+
       }
   ]

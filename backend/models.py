@@ -29,11 +29,6 @@ class Teams(models.Model):
     team_progress = models.DecimalField(decimal_places=2,max_digits=5)
     team_picture = models.BinaryField()
 
-    # @classmethod
-    # def create(self, username, password):
-    #     credentials = self(username=username, password=password)
-    #     return credentials
-
 class Project(models.Model):
     project_name = models.CharField(max_length=100)
     team_name = models.ForeignKey(

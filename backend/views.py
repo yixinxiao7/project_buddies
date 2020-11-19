@@ -3,7 +3,7 @@ from .models import Person, Credentials, Teams, Project, ProjectSkill, TeamFeed,
 from .serializers import *
 # from .serializers import PersonSerializer, CredentialsSerializer, TeamsSerializer, MemberSerializer
 
-from rest_framework import generics, views, response, status
+from rest_framework import generics, views, response, status, exceptions
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -221,8 +221,50 @@ class ProjectListCreate(views.APIView):
 
 class TeamFeedCreate(views.APIView):
     """
-    Add a team announcement.
+    Post and Get team announcements.
     """
+    def get(self, request):
+        """
+        Get a list of team announcements based on page number and number of items per page.
+        """ 
+        #Pages are ZERO-INDEXED!
+        #Since primary key of team is just id, foreign key references id not team name
+        #propose changing primary key to teamname and make teamnames unique?
+        #same for username?
+        query_team = request.query_params.get('teamName')
+        query_page = request.query_params.get('pageNum')
+        query_num_items = request.query_params.get('numItems')
+        if query_page == None:
+            query_page = 0
+        else:
+            query_page = int(query_page)
+        if query_num_items == None:
+            query_num_items = 5
+        else:
+            query_num_items = int(query_num_items)
+        feed_data = {}
+        if query_team is not None:
+            try:
+                announcements = TeamFeed.objects.filter(team_name=query_team).values()
+                #case 1: not enough to get to page
+                start = query_page*query_num_items
+                offset = query_num_items
+                if len(announcements) < start:
+                    feed_data['last_page'] = True
+                    feed_data['feed'] = []
+                #case 2: enough to get to page, but not enough to fill 
+                elif len(announcements) < start + offset:
+                    feed_data['last_page'] = True
+                    feed_data['feed'] =  announcements[start:len(announcements)]
+                #case 3: enought to get to page and enough to fill
+                else:
+                    feed_data['last_page'] = False
+                    feed_data['feed'] = announcements[start : start + offset]
+                return response.Response(feed_data, status=status.HTTP_200_OK)
+            except (TeamFeed.DoesNotExist, ValueError):
+                print("Could not find team name")
+        print("TEAMFEED GET ERROR")
+        return response.Response({'error': 'place generic error here, could not find in Django docs'}, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
         """
