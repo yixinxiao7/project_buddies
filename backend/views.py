@@ -382,4 +382,13 @@ class MemberCreate(views.APIView):
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Member.DoesNotExist:
             return response.Response(status=status.HTTP_404_NOT_FOUND)
-    
+
+
+class MemberDelete(views.APIView):
+    def delete(self, request, username):
+        try:
+            member = Member.objects.get(user_name=username)
+            member.delete()
+            return response.Response(status=status.HTTP_204_NO_CONTENT)
+        except Member.DoesNotExist:
+            return response.Response(status=status.HTTP_404_NOT_FOUND)
