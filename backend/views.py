@@ -78,12 +78,16 @@ class PersonView(views.APIView):
                 return response.Response(serializer.data, status=status.HTTP_201_CREATED)
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Person.DoesNotExist:
-                return response.Response(all_person_data, status=status.HTTP_404_NOT_FOUND)
+            return response.Response(all_person_data, status=status.HTTP_404_NOT_FOUND)
 
 class CredentialsCreate(views.APIView):
     """
     Create credential information for user.
     """
+    def hash_and_salt_(self, password):
+        salt = uuid.uuid4().hex
+        return hashlib.sha512((password + salt).encode('utf-8')).hexdigest()
+
     def post(self, request):
         """
         Adds user and hashed password to Credentials schema.
@@ -93,13 +97,8 @@ class CredentialsCreate(views.APIView):
         Returns:
             HTTP response of success or failure.
         """
-        # load data
-        passw = request.data["password"]
-
-        # hash password
-        salt = uuid.uuid4().hex
-        hashed_passw = hashlib.sha512((passw + salt).encode('utf-8')).hexdigest()
-        request.data["password"] = hashed_passw
+        # protect password
+        request.data["password"] = self.hash_and_salt_(request.data["password"])
 
         # post to table
         serializer = CredentialsSerializer(data=request.data)
@@ -107,6 +106,29 @@ class CredentialsCreate(views.APIView):
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        """
+        Edits credentials. "Forgot password" functionality.
+        Input:
+            request: request object. request.data is a dictionary with 
+            credentials fields.
+        Returns:
+            HTTP response of success or failure.
+        """
+        try:
+            
+            user_credentials = Credentials.objects.get(username=request.data['username'])
+            # protect new password
+            request.data["password"] = self.hash_and_salt_(request.data['password'])
+
+            serializer = CredentialsSerializer(user_credentials, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Credentials.DoesNotExist:
+            return response.Response(status=status.HTTP_404_NOT_FOUND)
 
 class TeamsListCreate(views.APIView):
     
@@ -332,8 +354,6 @@ class MemberCreate(views.APIView):
                 except Member.DoesNotExist:
                     #print("Could not find item")
                     return response.Response(all_member_data, status=status.HTTP_404_NOT_FOUND)
-                print("@@@@@")
-                print(all_member_data)
         return response.Response(all_member_data, status=status.HTTP_200_OK)
     # POST Request
     def post(self, request):
@@ -361,5 +381,5 @@ class MemberCreate(views.APIView):
                 return response.Response(serializer.data, status=status.HTTP_201_CREATED)
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Member.DoesNotExist:
-                return response.Response(status=status.HTTP_404_NOT_FOUND)
+            return response.Response(status=status.HTTP_404_NOT_FOUND)
     
