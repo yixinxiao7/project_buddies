@@ -332,6 +332,8 @@ class MemberCreate(views.APIView):
                 except Member.DoesNotExist:
                     #print("Could not find item")
                     return response.Response(all_member_data, status=status.HTTP_404_NOT_FOUND)
+                print("@@@@@")
+                print(all_member_data)
         return response.Response(all_member_data, status=status.HTTP_200_OK)
     # POST Request
     def post(self, request):
@@ -341,4 +343,23 @@ class MemberCreate(views.APIView):
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def put(self, request):
+        """
+        Edits member.
+        Input:
+            request: request object. request.data is a dictionary with 
+            member fields.
+        Returns:
+            HTTP response of success or failure.
+        """
+        try:
+            member = Member.objects.get(user_name=request.data['user_name'])
+            serializer = MemberSerializer(member, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Member.DoesNotExist:
+                return response.Response(status=status.HTTP_404_NOT_FOUND)
     

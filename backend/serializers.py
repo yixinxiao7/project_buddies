@@ -34,5 +34,5 @@ class ProjectSkillSerializer(serializers.ModelSerializer):
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
-        fields = ('first_name', 'last_name', 'team_name')
+        fields = ('user_name','first_name', 'last_name', 'team_name')
 
