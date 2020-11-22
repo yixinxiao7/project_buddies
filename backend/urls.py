@@ -9,4 +9,5 @@ urlpatterns = [
     path('api/teamfeed/', views.TeamFeedCreate.as_view()), 
     path('api/projectskill/', views.ProjectSkillCreate.as_view()),
     path('api/member/', views.MemberCreate.as_view()),
+    path('api/member/:<str:username>', views.MemberDelete.as_view())
 ]
