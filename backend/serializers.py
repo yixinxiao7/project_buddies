@@ -9,7 +9,7 @@ class PersonSerializer(serializers.ModelSerializer):
 class CredentialsSerializer(serializers.ModelSerializer):
     class Meta:
        model = Credentials
-       fields = ('id','username', 'password')
+       fields = ('id','username', 'password', 'salt')
 
 class TeamsSerializer(serializers.ModelSerializer):
     class Meta:
