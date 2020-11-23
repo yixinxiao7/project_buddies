@@ -21,6 +21,7 @@ class Member(models.Model):
 class Credentials(models.Model):
     username = models.CharField(max_length=100)
     password = models.CharField(max_length=300)
+    salt = models.CharField(max_length=300)
 
 class Teams(models.Model):
     team_name = models.CharField(max_length=1000)
