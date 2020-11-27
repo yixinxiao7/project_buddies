@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from "react-router-dom";
 
 
 export default class Login extends React.Component {
@@ -7,6 +8,7 @@ export default class Login extends React.Component {
       this.state = {
         username: '',
         password: '',
+        redirect: false,
         hidden: true,
       };
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,13 +29,17 @@ export default class Login extends React.Component {
         },
         body: userPass })
         .then((response) => {
-          if (!response.ok) throw Error(response.statusText);
+          if (!response.ok) {
+            response.text().then(error => {
+              const json_error = JSON.parse(error);
+              alert(json_error.error);
+            })
+          }
           return response.json();
         })
         .then((data) => {  // TODO, redirect user to account success page
           this.setState({
-            username: '',
-            password: '',
+            redirect: true
           });
         });
     }
@@ -45,6 +51,11 @@ export default class Login extends React.Component {
     render() {
         const { username } = this.state;
         const { password } = this.state;
+        const { redirect } = this.state;
+
+        if (redirect) {
+          return <Redirect to="/home" />
+        }
         return (
             <div>
               <input

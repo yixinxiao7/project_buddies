@@ -38,7 +38,6 @@ export default class CreateAccount extends React.Component {
           return response.json();
         })
         .then((data) => {  // TODO, redirect user to account success page
-          console.log("IT GETS HERE");
           this.setState({redirect: true})
         });
     }
