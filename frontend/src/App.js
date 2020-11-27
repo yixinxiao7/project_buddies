@@ -4,6 +4,7 @@ import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import Home from './components/home.jsx';
 import CreateAccount from './components/createAccount.jsx';
 import Login from './components/Login.jsx';
+import AccountCreated from './components/AccountCreated.jsx';
 
 class App extends Component {
   render() {
@@ -12,6 +13,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/createAccount" component={() => <CreateAccount url={`api/credentials/`}/>} />
+          <Route path="/accountCreated" component={AccountCreated}/>
           <Route path="/login" component={() => <Login url={`api/sessions/`}/>} />
           {/* <Route exact path="/404" component = {NotFound}/> */}
           {/* <Redirect to="/404"/> */}

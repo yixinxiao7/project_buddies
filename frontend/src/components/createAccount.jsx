@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Redirect } from "react-router-dom";
 
 export default class CreateAccount extends React.Component {
     constructor(props) {
@@ -8,6 +8,7 @@ export default class CreateAccount extends React.Component {
         username: '',
         password: '',
         confirmPassword: '',
+        redirect: false,
         hidden: true,
       };
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,11 +38,8 @@ export default class CreateAccount extends React.Component {
           return response.json();
         })
         .then((data) => {  // TODO, redirect user to account success page
-          this.setState({
-            username: '',
-            password: '',
-            confirmPassword: '',
-          });
+          console.log("IT GETS HERE");
+          this.setState({redirect: true})
         });
     }
 
@@ -53,6 +51,11 @@ export default class CreateAccount extends React.Component {
         const { username } = this.state;
         const { password } = this.state;
         const { confirmPassword } = this.state;
+        const { redirect } = this.state;
+        
+        if (redirect) {
+            return <Redirect to="/accountCreated" />
+        }
         return (
             <div>
               <input
