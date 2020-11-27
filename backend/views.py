@@ -80,6 +80,45 @@ class PersonView(views.APIView):
         except Person.DoesNotExist:
             return response.Response(all_person_data, status=status.HTTP_404_NOT_FOUND)
 
+class SessionViews(views.APIView):
+    '''
+    POST /login - creates session
+    DELETE /logout - destroys session
+    '''
+    def hash_and_salt_(self, password, salt):
+        return hashlib.sha512((password + salt).encode('utf-8')).hexdigest()
+    
+    # TODO: modify this to not handle logoffs
+    def post(self, request):
+        """
+        Logs the user in if they successfully make a valid Get request for credentials
+        Input:
+            request: request object. request.data is a dictionary with 
+            'username' and 'password'.
+        Output:
+            HTTP response of success or failure.
+            Also creates a session for the user
+        """        
+        if "password" in request.data and "username" in request.data:
+            try:
+                query_username = Credentials.objects.get(username=request.data["username"])
+                hashed_pass = self.hash_and_salt_(request.data["password"], query_username.salt)
+                if query_username.password == hashed_pass:
+                    request.session['user'] = query_username.username
+                else:
+                    return response.Response({"error": "invalid password or username"}, status=status.HTTP_400_BAD_REQUEST)
+
+            except Credentials.DoesNotExist:
+                return response.Response({"error": "invalid password or username"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return response.Response({"error": "badly formatted request"}, status=status.HTTP_400_BAD_REQUEST)
+        return response.Response({}, status=status.HTTP_200_OK)
+    
+    # TODO: UNTESTED
+    def delete(self, request):
+        request.session.flush()
+        return response.Response({}, status=status.HTTP_200_OK)
+
 class CredentialsCreate(views.APIView):
     """
     Create credential information for user.
@@ -118,36 +157,6 @@ class CredentialsCreate(views.APIView):
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    def get(self, request):
-        """
-        Logs the user in if they successfully make a valid Get request for credentials
-        Input:
-            request: request object. request.data is a dictionary with 
-            'username' and 'password'.
-        Output:
-            HTTP response of success or failure.
-            Also creates a session for the user
-        """
-
-        if "password" in request.data and "username" in request.data and login in request.data:
-            if request.data["login"] == False:
-                request.session.flush()
-                return response.Response({}, status=status.HTTP_200_OK)
-            try:
-                query_username = Credentials.objects.get(username=request.data["username"])
-                hashed_pass = self.hash_and_salt_(request.data["password"], query_username.salt)
-                if query_username.password == hashed_pass:
-                    request.session['user'] = query_username.username
-                else:
-                    return response.Response({"error": "invalid password or username"}, status=status.HTTP_400_BAD_REQUEST)
-
-            except Credentials.DoesNotExist:
-                return response.Response({"error": "invalid password or username"}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return response.Response({"error": "badly formatted request"}, status=status.HTTP_400_BAD_REQUEST)
-        return response.Response({}, status=status.HTTP_200_OK)
-
 
     def put(self, request):
         """
