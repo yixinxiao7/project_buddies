@@ -4,7 +4,8 @@
       "pk": 1,
       "fields": {
         "username": "user1",
-        "password": "7e88d5a053baf77e4fc1c87512174bf7c703b9d5c317ac8c8f16d602ef0b19285d4fa7ef973a8b8af50b6a27e94a4a5040451ae6aa3ba5efb370e0580cd68c06"
+        "password": "cde685cbe0dcd55befcbc118e6b3b521290297b2192e408348e351e1b82e5c3858c1f1527cc0b2fdac64f6bc13f50bc09ad9054a53b997d1f3e7cda2a3ad35d4",
+        "salt": "c995f055d3394b20b4e1dea177cc0578"
       }
     },
     {
@@ -12,7 +13,8 @@
       "pk": 2,
       "fields": {
         "username": "user2",
-        "password": "f5aaa5c9a23744bf0bca426f7b5db301e3e9983ed3a8a13f72e0f1116f9612de1d276bc7e87a5eef65ee54555fdee3f6ec74a780927871b7749ae5d59c271238"
+        "password": "95325c70130fc0b9b764a5b82143a89fd1f557c81766356ab1a754a503c02557b7e1722cf7ca1a302b5988da69f223a4a78b8a8224ffc560d0869745dd6928d3",
+        "salt": "d2ee32b832ae47138c398bbec2a6d531"
       }
     },
     {
@@ -20,7 +22,8 @@
       "pk": 3,
       "fields": {
         "username": "user3",
-        "password": "8cbf6bdc13fbe07c4e22e8c5dc6f9aa94575230204b28d96a04c5ef2fb8bfc2d8cf20deb932f6f12d4efaeb304ea969dfa284658dae3c2a8fda9c02e77024c05"
+        "password": "855ee64b0b09f8e218c4733c9c61524577f5d1e0123f225d3da2f96f5d687caed9b4867850e1fb755f741e178dad53f416d5550e8e31f1be5b6d8109d3be040c",
+        "salt": "9fef3ed68078491980b2463ea24b3387"
       }
     },
     {
@@ -28,7 +31,8 @@
       "pk": 4,
       "fields": {
         "username": "user4",
-        "password": "c4e84643679f9c40a51dbc2d30e93627d270d330ba87f47f24ecf10005ed31c0edf79a232aeec9fa02c634cf860d84ecff97a764ccb10bb0e264bb8e491db0cf"
+        "password": "237584ab8c41400001fc3c69be84b9d3d649a8533fee443a7a2231de8e76e1794835a338b4048650e8b071848db33b0977f380b662baec3c8ab05f7c54b5e0f6",
+        "salt": "269ef468f7cb4e19afd703848a88a9cb"
       }
     },
     {
