@@ -15,7 +15,7 @@ export default class Home extends React.Component {
                     <a href="/#/createAccount">Create an account</a>
                 </p>
                 <p>
-                    <a href="/"
+                    <a href="/#/login">Login</a>
                 </p>
 
                 <a href="https://www.youtube.com/watch?v=qYWl5ou6R4g">i dare you to click me</a>

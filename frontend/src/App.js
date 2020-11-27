@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 import Home from './components/home.jsx';
 import CreateAccount from './components/createAccount.jsx';
+import Login from './components/Login.jsx';
 
 class App extends Component {
   render() {
@@ -11,7 +12,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/createAccount" component={() => <CreateAccount url={`api/credentials/`}/>} />
-          <Route path="/login" component ????????????
+          <Route path="/login" component={() => <Login url={`api/login/`}/>}
           {/* <Route exact path="/404" component = {NotFound}/> */}
           {/* <Redirect to="/404"/> */}
         </Switch>

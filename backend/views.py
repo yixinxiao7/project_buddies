@@ -84,7 +84,8 @@ class CredentialsCreate(views.APIView):
     """
     Create credential information for user.
     """
-    def hash_and_salt_(self, password, salt):
+    def hash_and_salt_(self, password):
+        salt = uuid.uuid4().hex
         return hashlib.sha512((password + salt).encode('utf-8')).hexdigest()
 
     def post(self, request):
@@ -96,58 +97,15 @@ class CredentialsCreate(views.APIView):
         Returns:
             HTTP response of success or failure.
         """
-        """
-        Test input:
-        {
-            "username": "test_new_salt",
-            "password": "yeetsalt"
-        }
-        """
-
         # protect password
-        new_salt = uuid.uuid4().hex
-        print(len(new_salt))
-        print(new_salt)
-        request.data["password"] = self.hash_and_salt_(request.data["password"], new_salt)
-        request.data["salt"] = new_salt
-        print(request.data["salt"])
-        print("got here")
+        request.data["password"] = self.hash_and_salt_(request.data["password"])
+
         # post to table
         serializer = CredentialsSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_201_CREATED)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    def get(self, request):
-        """
-        Logs the user in if they successfully make a valid Get request for credentials
-        Input:
-            request: request object. request.data is a dictionary with 
-            'username' and 'password'.
-        Output:
-            HTTP response of success or failure.
-            Also creates a session for the user
-        """
-
-        if "password" in request.data and "username" in request.data and login in request.data:
-            if request.data["login"] == False:
-                request.session.flush()
-                return response.Response({}, status=status.HTTP_200_OK)
-            try:
-                query_username = Credentials.objects.get(username=request.data["username"])
-                hashed_pass = self.hash_and_salt_(request.data["password"], query_username.salt)
-                if query_username.password == hashed_pass:
-                    request.session['user'] = query_username.username
-                else:
-                    return response.Response({"error": "invalid password or username"}, status=status.HTTP_400_BAD_REQUEST)
-
-            except Credentials.DoesNotExist:
-                return response.Response({"error": "invalid password or username"}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return response.Response({"error": "badly formatted request"}, status=status.HTTP_400_BAD_REQUEST)
-        return response.Response({}, status=status.HTTP_200_OK)
-
 
     def put(self, request):
         """
