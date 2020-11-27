@@ -7,6 +7,7 @@ export default class CreateAccount extends React.Component {
       this.state = {
         username: '',
         password: '',
+        confirmPassword: '',
         hidden: true,
       };
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -16,6 +17,11 @@ export default class CreateAccount extends React.Component {
 
     handleSubmit(event) {
       event.preventDefault();
+      
+      if (this.state.password != this.state.confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
       const {url} = this.props;
       const userPass = JSON.stringify({ username: this.state.username, password: this.state.password });
       fetch(url,  {
@@ -30,14 +36,11 @@ export default class CreateAccount extends React.Component {
           if (!response.ok) throw Error(response.statusText);
           return response.json();
         })
-        .then((response) => {
-          if (!response.ok) throw Error(response.statusText);
-          return response.json();
-        })
         .then((data) => {  // TODO, redirect user to account success page
           this.setState({
             username: '',
             password: '',
+            confirmPassword: '',
           });
         });
     }
@@ -49,6 +52,7 @@ export default class CreateAccount extends React.Component {
     render() {
         const { username } = this.state;
         const { password } = this.state;
+        const { confirmPassword } = this.state;
         return (
             <div>
             <form onSubmit={this.handleSubmit}>
@@ -66,12 +70,20 @@ export default class CreateAccount extends React.Component {
                     placeholder="Password"
                     onChange={(e) => this.setState({ password: e.target.value })}
                 />
+                <input
+                    type={this.state.hidden ? 'password' : 'text'}
+                    name="confirmPassword"
+                    value={confirmPassword}
+                    placeholder="Confirm password"
+                    onChange={(e) => this.setState({ confirmPassword: e.target.value })}
+                />
                 <button onClick={this.toggleShow}>Show / Hide</button>
                 <input
                     type="submit"
                     name="submitButton"
                     value="Create Account"
                 />
+                
             </form>
             </div>
         );

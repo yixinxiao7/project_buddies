@@ -91,7 +91,7 @@ class SessionViews(views.APIView):
     # TODO: modify this to not handle logoffs
     def post(self, request):
         """
-        Logs the user in if they successfully make a valid Get request for credentials
+        Logs the user in if they successfully make a valid post request for credentials
         Input:
             request: request object. request.data is a dictionary with 
             'username' and 'password'.
