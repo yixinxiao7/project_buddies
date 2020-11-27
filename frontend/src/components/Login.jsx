@@ -47,28 +47,28 @@ export default class Login extends React.Component {
         const { password } = this.state;
         return (
             <div>
-            <form onSubmit={this.handleSubmit}>
-                <input
-                    type="text"
-                    name="username"
-                    value={username}
-                    placeholder="Username"
-                    onChange={(e) => this.setState({ username: e.target.value })}
-                />
-                <input
-                    type={this.state.hidden ? 'password' : 'text'}
-                    name="password"
-                    value={password}
-                    placeholder="Password"
-                    onChange={(e) => this.setState({ password: e.target.value })}
-                />
-                <button onClick={this.toggleShow}>Show / Hide</button>
+              <input
+                  type="text"
+                  name="username"
+                  value={username}
+                  placeholder="Username"
+                  onChange={(e) => this.setState({ username: e.target.value })}
+              />
+              <input
+                  type={this.state.hidden ? 'password' : 'text'}
+                  name="password"
+                  value={password}
+                  placeholder="Password"
+                  onChange={(e) => this.setState({ password: e.target.value })}
+              />
+              <button onClick={this.toggleShow}>Show / Hide</button>
+              <form onSubmit={this.handleSubmit}>
                 <input
                     type="submit"
                     name="submitButton"
                     value="Login"
                 />
-            </form>
+              </form>
             </div>
         );
     }

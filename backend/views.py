@@ -145,12 +145,8 @@ class CredentialsCreate(views.APIView):
 
         # protect password
         new_salt = uuid.uuid4().hex
-        print(len(new_salt))
-        print(new_salt)
         request.data["password"] = self.hash_and_salt_(request.data["password"], new_salt)
         request.data["salt"] = new_salt
-        print(request.data["salt"])
-        print("got here")
         # post to table
         serializer = CredentialsSerializer(data=request.data)
         if serializer.is_valid():
